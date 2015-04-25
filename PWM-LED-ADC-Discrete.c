@@ -3,10 +3,14 @@
  *
  * Created: 09-12-2014 23:44:18
  *  Author: sidj
+ 
+ This code works on an ATMega 16/32 microcontroller with an external crystal of frequency 16MHz attached to it.
+ The LED is connected to the PB3 of the microcontroller which is the default PWM output for Timer 0.
+ The ADC is taken on PA0
  */ 
 
 #include <avr/io.h>
-#define F_CPU 160000000UL
+#define F_CPU 16000000UL
 #include <util/delay.h>
 
 int main(void)
@@ -16,9 +20,9 @@ int main(void)
 	PORTB=(1<<PB3);
 	int a;
 	
-	ADMUX|=(1<<REFS0);     //internally shorting AREF and AVCC//analog signal taken on pin0//
-	ADCSRA|=(1<<ADEN)|(1<<ADPS0)|(1<<ADPS1)|(1<<ADPS2);  //enabling ADC and setting division factor//
-	TCCR0|=(1<<WGM01)|(1<<WGM00)|(1<<COM01)|(1<<CS00);     //setting on fast PWM mode and no prescaling//
+	ADMUX|=(1<<REFS0);     //internally shorting AREF and AVCC   //analog signal taken on pin0
+	ADCSRA|=(1<<ADEN)|(1<<ADPS0)|(1<<ADPS1)|(1<<ADPS2);  //enabling ADC and setting division factor
+	TCCR0|=(1<<WGM01)|(1<<WGM00)|(1<<COM01)|(1<<CS00);     //setting on fast PWM mode and no prescaling
 	
     while(1)
     {
@@ -37,7 +41,6 @@ int main(void)
 		{
 		OCR0=192; //75% duty cycle
 		}
-		
 		else if(a>818) //else between 4-5 volts//
 		{
 		OCR0=254; //~100% duty cycle
